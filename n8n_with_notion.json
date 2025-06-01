@@ -1,0 +1,866 @@
+{
+  "name": "n8n with notion",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "50372bae-7182-4b34-842f-73bdf545554c",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "202deac6-3d60-806b-a2a1-ea2ad9d7b3c8",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://www.notion.so/202deac63d60806ba2a1ea2ad9d7b3c8"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        0
+      ],
+      "id": "79934915-58ae-4c9a-921e-72a80d37a354",
+      "name": "Notion get db Content",
+      "alwaysOutputData": true,
+      "credentials": {
+        "notionApi": {
+          "id": "4A652Uto8cXDgZXw",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "202deac6-3d60-8036-86c5-cc2289997991",
+          "mode": "list",
+          "cachedResultName": "Daily Idea",
+          "cachedResultUrl": "https://www.notion.so/202deac63d60803686c5cc2289997991"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        0
+      ],
+      "id": "e0aecc78-22bc-4c02-abee-c3298218e16c",
+      "name": "Notion get db Daily Idea",
+      "alwaysOutputData": true,
+      "credentials": {
+        "notionApi": {
+          "id": "4A652Uto8cXDgZXw",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "202deac6-3d60-80b3-a40e-c50551e2ba92",
+          "mode": "list",
+          "cachedResultName": "Prompt Library",
+          "cachedResultUrl": "https://www.notion.so/202deac63d6080b3a40ec50551e2ba92"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        680,
+        0
+      ],
+      "id": "d9c0072a-8762-48a0-bde0-1ce4e2436de8",
+      "name": "Notion get db Prompt Library",
+      "alwaysOutputData": true,
+      "credentials": {
+        "notionApi": {
+          "id": "4A652Uto8cXDgZXw",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        620,
+        520
+      ],
+      "id": "e0de2e1c-4fc7-4608-b63c-e4756e06e851",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "pD7IIzFrKJdEUIZs",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $execution.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        780,
+        540
+      ],
+      "id": "bc8c4764-faa4-4242-94c3-2a1a5faae962",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemma-3n-e4b-it",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        80,
+        700
+      ],
+      "id": "01b1fab4-d1f7-4185-9293-b90bb7b1f4f9",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "UtB4tlwJG2aMDLvn",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $execution.id }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        180,
+        520
+      ],
+      "id": "ef17e18a-0d39-4bb7-a5c9-d95b5bfb8e63",
+      "name": "Simple Memory1"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "202deac6-3d60-8036-86c5-cc2289997991",
+          "mode": "list",
+          "cachedResultName": "Daily Idea",
+          "cachedResultUrl": "https://www.notion.so/202deac63d60803686c5cc2289997991"
+        },
+        "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Title', ``, 'string') }}",
+        "simple": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Simplify', ``, 'boolean') }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Tanggal|date",
+              "includeTime": false,
+              "date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues0_Date', ``, 'string') }}",
+              "timezone": "Asia/Jakarta"
+            },
+            {
+              "key": "Description|rich_text",
+              "textContent": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues1_Text', ``, 'string') }}"
+            },
+            {
+              "key": "Topic|rich_text",
+              "textContent": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues2_Text', ``, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        340,
+        500
+      ],
+      "id": "8884a589-62e7-46a6-8e78-5b514216e8d5",
+      "name": "Notion insert db Daily Idea",
+      "credentials": {
+        "notionApi": {
+          "id": "4A652Uto8cXDgZXw",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "grok-3",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatXAiGrok",
+      "typeVersion": 1,
+      "position": [
+        220,
+        700
+      ],
+      "id": "0c23abfa-47f6-4eeb-8861-80fbe8dfb53d",
+      "name": "xAI Grok Chat Model",
+      "credentials": {
+        "xAiApi": {
+          "id": "WQxQNDj9n1VF85aM",
+          "name": "xAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "202deac6-3d60-80b3-a40e-c50551e2ba92",
+          "mode": "list",
+          "cachedResultName": "Prompt Library",
+          "cachedResultUrl": "https://www.notion.so/202deac63d6080b3a40ec50551e2ba92"
+        },
+        "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Title', ``, 'string') }}",
+        "simple": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Simplify', ``, 'boolean') }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Content|relation",
+              "relationValue": [
+                "={{ $('Notion get db Content1').item.json.id }}"
+              ]
+            },
+            {
+              "key": "Prompt|rich_text",
+              "textContent": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues1_Text', ``, 'string') }}"
+            },
+            {
+              "key": "Prompt Name|title",
+              "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues2_Title', ``, 'string') }}"
+            },
+            {
+              "key": "Use Case|rich_text",
+              "textContent": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues3_Text', ``, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        1500,
+        500
+      ],
+      "id": "3d9df7b9-4c8d-4c4e-9562-7de89a82d71d",
+      "name": "Notion insert db Prompt Library",
+      "credentials": {
+        "notionApi": {
+          "id": "4A652Uto8cXDgZXw",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        40,
+        500
+      ],
+      "id": "e56d18b8-4206-4a26-8df8-df1feb3b19b1",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "pD7IIzFrKJdEUIZs",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Sekarang tanggal {{ $now }}\n\nAct as a professional Content Strategist specialized in Instagram Reels and carousel posts. \n\nYour main task is to generate unique, engaging, and niche-specific content ideas to be used for short-form video (Reels) or carousel content for today (1 day, 1 idea). if idea for next yodays already set, so you don't have to write me idea\n\nTarget Audience: [karyawan kantoran di Indonesia, usia 25–40 tahun, tertarik pada solusi AI dan automation untuk meningkatkan produktivitas kerja.]\n\nNiche: [AI automation, productivity, Notion, n8n, dan content creator tools.]\n\nPlease generate 5 high-performing content ideas including:\n- Title (max 10 words)\n- Short hook (max 1 sentence)\n- Suggested content format (Reels, carousel, quote, tutorial, etc.)\n- Pain point it solves\n- Potential virality angle or emotion\n- Call-to-action (CTA)\n\nAlways write on bahasa Indonesia\n\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        100,
+        260
+      ],
+      "id": "5ea49d40-da42-410c-8e48-cd7d6c091e93",
+      "name": "AI Agent Idea"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1220,
+        520
+      ],
+      "id": "b400c1f1-cad0-40a7-8918-c1ab623bd553",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "pD7IIzFrKJdEUIZs",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $execution.id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1340,
+        520
+      ],
+      "id": "17172df0-555f-42af-bbcf-95ee46472d38",
+      "name": "Simple Memory2"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "",
+          "__regex": "^([0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12})"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        1480,
+        60
+      ],
+      "id": "1cbb33c2-028e-4aba-9bbc-4802df0d8b32",
+      "name": "Notion",
+      "credentials": {
+        "notionApi": {
+          "id": "4A652Uto8cXDgZXw",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Sekarang tanggal {{ $now }}\n\nAct as a professional scriptwriter and copywriter specializing in short-form digital content for Instagram Reels, Carousels, YouTube Shorts, LinkedIn Posts, and Blogs.\n\nYou will receive **one content idea** from the \"Daily Idea\" Notion database.\n  {{ $('Notion get db Daily Idea1').item.json.name }}\nYour task is to generate **3 unique and varied content entries** based on that single idea.  \nEach entry must be tailored to a different **content type** and **platform**, and follow the structure used in my Notion database.\n\n---\n\n🔧 For each of the 3 content variations, generate:\n\n- **Title**: short internal title or ID\n- **Tanggal**: today's date in `YYYY-MM-DD` format\n- **Platform**: choose one platform from [\"Instagram\", \"YouTube\", \"LinkedIn\"]\n- **Type**: choose one format from [\"Reel\", \"Carousel\", \"Short\", \"Video\", \"Blog\"]\n- **Judul**: compelling public headline for the content\n- **Ide**: insert the original idea text from \"Daily Idea\" database {{ $('Notion get db Daily Idea1').item.json.name }}\n- **Caption**: persuasive, engaging caption in *Bahasa Indonesia*, max 2200 characters\n- **Hashtag**: include 3–10 relevant hashtags (comma-separated)\n- **Status**: always set this to `\"Draft\"`\n- **Prompt**: leave this field empty\n- **Idea Description**: write a clear description (in Bahasa Indonesia) explaining the content idea in a maximum of 2000 characters\n\n---\n\n🎯 Guidelines:\n- **Use Bahasa Indonesia** for all content.\n- Start with a **strong hook** that captures attention.\n- Ensure content is relatable for Indonesian office workers aged 25–40.\n- End with a **clear CTA** (ajak like, comment, share, save, dll).\n- Adjust tone/style to match the chosen type:\n  - **Reel / Short**: fast-paced, energetic, storytelling\n  - **Carousel**: informative, visual-first, page-by-page structure\n  - **Blog**: casual, reflective, problem-solution format\n  - **Video**: practical, clear narrative, use case style\n\n---\n\n🧾 Output format (return ONLY a valid JSON array with 3 objects):\n```json\n[\n  {\n    \"Title\": \"Internal title or code\",\n    \"Tanggal\": \"2025-05-29\",\n    \"Platform\": \"Instagram\",\n    \"Type\": \"Reel\",\n    \"Judul\": \"Judul konten publik\",\n    \"Ide\": \"Isi ide dari Notion Daily Idea\",\n    \"Caption\": \"Teks caption yang engaging, maksimal 2200 karakter\",\n    \"Hashtag\": \"#produktivitas #kantor #automation\",\n    \"Status\": \"Draft\",\n    \"Prompt\": \"\",\n    \"Idea Description\": \"Deskripsi singkat dari ide, menjelaskan konteks dan tujuan konten ini. Maksimal 2000 karakter.\"\n  },\n  ...\n]\n\nReturn only the JSON array, no explanation, no formatting, and no intro text.\n“Only return valid JSON array with no explanation.”\n\n“Do not include code block formatting like triple backticks.”\n\n“Output must be valid JSON, no markdown, no extra text.”\n",
+        "hasOutputParser": true,
+        "options": {
+          "maxIterations": 10
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        1220,
+        780
+      ],
+      "id": "f050092e-04ae-4622-9baf-6640b45a36f8",
+      "name": "AI Agent Content Script Writer"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Act as a Prompt Engineer and Creative Visual Director for short-form educational or storytelling video content (Instagram Reels, YouTube Shorts). Get content idea from 'Daily Idea' and 'Content' database notion\n\nYour task is to create a structured visual story consisting of 3–5 scenes. Each scene must include:\n1. Image generation prompt (suitable for DALL·E or any image generator)\n2. Short narration (1–2 sentences) that will be used in voiceover or on-screen text\n3. Suggested camera framing/style (close-up, cinematic, isometric, comic-style, etc.)\n\nEnsure each image prompt is highly descriptive, detailed, and consistent with the theme. The narration should sound natural when spoken.\nReturn only the JSON array that fit for 'Propt Library' database notion.\n\nContoh Isian untuk Template Prompt di Atas:\n\n- `tema_konten`: \"Kenapa kerja lembur terus bikin kamu makin nggak produktif\"\n- `target_audience`: \"Karyawan kantoran usia 25–35 yang lelah dengan rutinitas kerja\"\n- `tujuan_video`: \"Menyadarkan audience pentingnya automation dan work-life balance\"\n- `gaya_narasi`: \"Emosional dan relatable, seperti sedang curhat ke penonton\"\n\nAlways write on bahasa Indonesia",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        1220,
+        260
+      ],
+      "id": "b5e76079-aedc-4be1-b878-8bdfaa6cbf80",
+      "name": "AI Agent Promt Engineer"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "202deac6-3d60-8036-86c5-cc2289997991",
+          "mode": "list",
+          "cachedResultName": "Daily Idea",
+          "cachedResultUrl": "https://www.notion.so/202deac63d60803686c5cc2289997991"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        500,
+        260
+      ],
+      "id": "1795e07f-3c2f-4360-8cfd-8d95f9a07bcc",
+      "name": "Notion get db Daily Idea1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "notionApi": {
+          "id": "4A652Uto8cXDgZXw",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "202deac6-3d60-806b-a2a1-ea2ad9d7b3c8",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://www.notion.so/202deac63d60806ba2a1ea2ad9d7b3c8"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        1020,
+        120
+      ],
+      "id": "14aa12b6-008b-4ff0-b0b9-cfbb3a96e7e0",
+      "name": "Notion get db Content1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "notionApi": {
+          "id": "4A652Uto8cXDgZXw",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "202deac6-3d60-806b-a2a1-ea2ad9d7b3c8",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://www.notion.so/202deac63d60806ba2a1ea2ad9d7b3c8"
+        },
+        "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Title', ``, 'string') }}",
+        "simple": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Simplify', ``, 'boolean') }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Caption|rich_text",
+              "textContent": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues0_Text', ``, 'string') }}"
+            },
+            {
+              "key": "Hastag|rich_text",
+              "textContent": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues1_Text', ``, 'string') }}"
+            },
+            {
+              "key": "Idea|relation",
+              "relationValue": [
+                "={{ $('Notion get db Daily Idea1').item.json.name }}"
+              ]
+            },
+            {
+              "key": "Platform|multi_select",
+              "multiSelectValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues3_Option_Names_or_IDs', ``, 'string') }}"
+            },
+            {
+              "key": "Status|status",
+              "statusValue": "Draft"
+            },
+            {
+              "key": "Tanggal|date",
+              "date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues5_Date', ``, 'string') }}",
+              "timezone": "Asia/Jakarta"
+            },
+            {
+              "key": "Title|title",
+              "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues6_Title', ``, 'string') }}"
+            },
+            {
+              "key": "Type|multi_select",
+              "multiSelectValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues7_Option_Names_or_IDs', ``, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        880,
+        720
+      ],
+      "id": "d342780e-ec28-480a-8151-fc0583a90744",
+      "name": "Notion insert db Content",
+      "credentials": {
+        "notionApi": {
+          "id": "4A652Uto8cXDgZXw",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Sekarang tanggal {{ $now }}\n\nAct as a professional scriptwriter and copywriter specializing in short-form digital content for Instagram Reels, Carousels, YouTube Shorts, LinkedIn Posts, and Blogs.\n\nYou will receive **one content idea** from the \"Daily Idea\" Notion database.\n  {{ $('Notion get db Daily Idea1').item.json.id }}\nYour task is to generate **3 unique and varied content entries** based on that single idea.  \nEach entry must be tailored to a different **content type** and **platform**, and follow the structure used in my Notion database.\n\n---\n\n🔧 For each of the 3 content variations, generate:\n\n- **Title**: short internal title or ID\n- **Tanggal**: today's date in `YYYY-MM-DD` format\n- **Platform**: choose one platform from [\"Instagram\", \"YouTube\", \"LinkedIn\"]\n- **Type**: choose one format from [\"Reel\", \"Carousel\", \"Short\", \"Video\", \"Blog\"]\n- **Judul**: compelling public headline for the content\n- **Ide**: insert the original idea text from \"Daily Idea\" database {{ $('Notion get db Daily Idea1').item.json.id }}\n- **Caption**: persuasive, engaging caption in *Bahasa Indonesia*, max 2200 characters\n- **Hashtag**: include 3–10 relevant hashtags (comma-separated)\n- **Status**: always set this to `\"Draft\"`\n- **Prompt**: leave this field empty\n- **Idea Description**: write a clear description (in Bahasa Indonesia) explaining the content idea in a maximum of 2000 characters\n\n---\n\n🎯 Guidelines:\n- **Use Bahasa Indonesia** for all content.\n- Start with a **strong hook** that captures attention.\n- Ensure content is relatable for Indonesian office workers aged 25–40.\n- End with a **clear CTA** (ajak like, comment, share, save, dll).\n- Adjust tone/style to match the chosen type:\n  - **Reel / Short**: fast-paced, energetic, storytelling\n  - **Carousel**: informative, visual-first, page-by-page structure\n  - **Blog**: casual, reflective, problem-solution format\n  - **Video**: practical, clear narrative, use case style\n\n---\n\n🧾 Output format (return ONLY a valid JSON array with 3 objects):\n```json\n[\n  {\n    \"Title\": \"Internal title or code\",\n    \"Tanggal\": \"2025-05-29\",\n    \"Platform\": \"Instagram\",\n    \"Type\": \"Reel\",\n    \"Judul\": \"Judul konten publik\",\n    \"Ide\": \"Isi ide dari Notion Daily Idea\",\n    \"Caption\": \"Teks caption yang engaging, maksimal 2200 karakter\",\n    \"Hashtag\": \"#produktivitas #kantor #automation\",\n    \"Status\": \"Draft\",\n    \"Prompt\": \"\",\n    \"Idea Description\": \"Deskripsi singkat dari ide, menjelaskan konteks dan tujuan konten ini. Maksimal 2000 karakter.\"\n  },\n  ...\n]\n\nReturn only the JSON array, no explanation, no formatting, and no intro text.\n“Only return valid JSON array with no explanation.”\n\n“Do not include code block formatting like triple backticks.”\n\n“Output must be valid JSON, no markdown, no extra text.”\n Create new page on \"Content\" notion database",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        680,
+        260
+      ],
+      "id": "e4a8c7da-d47c-41ff-9d16-5b746faeaab1",
+      "name": "AI Agent Content"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Create 'Content' Page based on 'Daily Idea' pages",
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "202deac6-3d60-806b-a2a1-ea2ad9d7b3c8",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://www.notion.so/202deac63d60806ba2a1ea2ad9d7b3c8"
+        },
+        "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Title', ``, 'string') }}",
+        "simple": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Simplify', ``, 'boolean') }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Title|title",
+              "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues0_Title', ``, 'string') }}"
+            },
+            {
+              "key": "Tanggal|date",
+              "date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues1_Date', ``, 'string') }}",
+              "timezone": "Asia/Jakarta"
+            },
+            {
+              "key": "Platform|multi_select",
+              "multiSelectValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues2_Option_Names_or_IDs', ``, 'string') }}"
+            },
+            {
+              "key": "Type|multi_select",
+              "multiSelectValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues3_Option_Names_or_IDs', ``, 'string') }}"
+            },
+            {
+              "key": "Idea|relation",
+              "relationValue": [
+                "={{ $('Notion get db Daily Idea1').item.json.id }}"
+              ]
+            },
+            {
+              "key": "Caption|rich_text",
+              "textContent": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues5_Text', ``, 'string') }}"
+            },
+            {
+              "key": "Hastag|rich_text",
+              "textContent": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('propertyValues6_Text', ``, 'string') }}"
+            },
+            {
+              "key": "Status|status",
+              "statusValue": "=Draft"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        480
+      ],
+      "id": "6227a942-f0e3-4563-b039-2f7074f90bbe",
+      "name": "Notion1",
+      "credentials": {
+        "notionApi": {
+          "id": "4A652Uto8cXDgZXw",
+          "name": "Notion account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Notion get db Daily Idea1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion get db Content": {
+      "main": [
+        [
+          {
+            "node": "Notion get db Daily Idea",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion get db Daily Idea": {
+      "main": [
+        [
+          {
+            "node": "Notion get db Prompt Library",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent Content",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent Content",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion get db Prompt Library": {
+      "main": [
+        []
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent Idea",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "xAI Grok Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Notion insert db Daily Idea": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent Idea",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion insert db Prompt Library": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent Promt Engineer",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent Idea",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Idea": {
+      "main": [
+        []
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent Promt Engineer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent Promt Engineer",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "AI Agent Content Script Writer": {
+      "main": [
+        []
+      ]
+    },
+    "Notion get db Daily Idea1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion get db Content1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent Promt Engineer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion insert db Content": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "AI Agent Content": {
+      "main": [
+        [
+          {
+            "node": "Notion get db Content1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent Content",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Jakarta",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "dc69fe63-8528-4d0b-8b2e-bde5e9fd352e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f19fdd4c39816d0c6ec059be9a4a01b0a9a5c84d74327b525545b526c59454ad"
+  },
+  "id": "Wz5K0Z84bothXRGr",
+  "tags": []
+}

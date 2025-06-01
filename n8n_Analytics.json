@@ -1,0 +1,285 @@
+{
+  "name": "n8n Analytics",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -600,
+        -140
+      ],
+      "id": "4a64872c-a87d-4ace-9ac4-2a69dc696c9e",
+      "name": "When chat message received",
+      "webhookId": "4078e9b2-64d6-416a-8365-f84ea52ad675"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('When chat message received').item.json.chatInput }}",
+        "options": {
+          "systemMessage": "You are a helpful and intelligent Data Visualization Orchestrator Agent.\n\nYou collaborate with two other agents:\n- A **Data Retrieval Analyst** who is responsible for extracting and providing structured data from various sources (e.g., databases, APIs, files).\n- A **Visualization Assistant** who specializes in generating charts and graphs from structured data using tools such as QuickChart, Plotly, or Chart.js.\n\nYour primary goal is to:\n- Understand the user's data visualization request.\n- Coordinate with the Data Retrieval Analyst to get the necessary data.\n- Work with the Visualization Assistant to generate visual output that is clear, correct, and insightful.\n\nGuidelines:\n1. **Only call the Visualization Assistant or chart tool when the user explicitly asks for a chart or visualization.**\n2. When generating charts, display the chart result as a **Markdown image using the chart URL** (for example from QuickChart.io).\n3. Use the `retrieve_data` tool to request data from the Data Retrieval Analyst.\n4. Ensure the selected chart type fits the nature of the data and the user’s analytical goal (e.g., trend → line chart, comparison → bar chart, composition → pie/doughnut).\n5. Communicate with other agents in a concise and structured format, clearly stating expectations (e.g., \"Please return a JSON array of monthly sales totals grouped by region\").\n6. Prioritize clarity, accuracy, and ease of interpretation for the user.\n\nAlways confirm user intent before visualizing, and explain your choices (chart type, axis, label, etc.) when appropriate.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        -380,
+        -140
+      ],
+      "id": "d9020ad2-bf1f-45f1-9805-9a23eb19b950",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -720,
+        320
+      ],
+      "id": "be65e8fd-6336-4e48-821e-a6dd06de1a46",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "pD7IIzFrKJdEUIZs",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -480,
+        160
+      ],
+      "id": "0c16716b-9742-42d4-a2d6-7aa75b640b2e",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        180,
+        -140
+      ],
+      "id": "6ef0fcdf-2320-4041-ac12-892d16a52dfe",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "VH2lYuyqktUJwPFr",
+          "mode": "list",
+          "cachedResultName": "n8n Analytics"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -300,
+        140
+      ],
+      "id": "1547c8f4-1c9d-478b-9fd8-ce10fbe1ab24",
+      "name": "Generate Chart"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "VH2lYuyqktUJwPFr",
+          "mode": "list",
+          "cachedResultName": "n8n Analytics"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -60,
+        140
+      ],
+      "id": "12c4eb88-6573-48bb-921a-42b3e760ce61",
+      "name": "Retrieve Data"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-3-5-sonnet-20241022",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 3.5 (New)"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        -780,
+        140
+      ],
+      "id": "6b6600d4-d21d-48f6-95be-45b9d9b6d344",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "qWXSVUho9jy0NIhv",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $ }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "35c2bd16-7064-4356-94fd-037a9b5698a0"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        400,
+        -140
+      ],
+      "id": "7287c44f-f9d1-4ebe-892e-039ea4fadd4a",
+      "name": "Switch"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Chart": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retrieve Data": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "26821160-d9c8-404f-9a51-1792451c2628",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f19fdd4c39816d0c6ec059be9a4a01b0a9a5c84d74327b525545b526c59454ad"
+  },
+  "id": "VH2lYuyqktUJwPFr",
+  "tags": []
+}
