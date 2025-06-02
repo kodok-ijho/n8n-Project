@@ -1,2 +1,2 @@
-# n8n-Project
-Collection of my n8n workflow
+# n8n and Flowise-Project
+Collection of my n8n anf Flowise workflow
