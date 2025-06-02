@@ -1,0 +1,158 @@
+{
+  "name": "3. RUNNING SP Report and Send to Email",
+  "nodes": [
+    {
+      "parameters": {
+        "fromEmail": "DeSSy.Admin@astragraphia.co.id",
+        "toEmail": "iskandar.liemena@astragraphia.co.id,heru.supriantono@astragraphia.co.id",
+        "subject": "Report Cost/Mop Daily",
+        "html": "=Dear All,\n\nBerikut adalah report Cost/MoP dari Equipment yang dibuat UMC pada hari ini. </br>\nEquipment tersebut memiliki Cost/MoP Avg12Month lebih tinggi dibandingkan dengan Cost/MoP Avg12Month Family nya.\n</br></br>\n{{ $json.table }}\n</br>\nTerima kasih.\n</br></br>\nSalam,</br>\nDeSSy Admin</br>\nService Planning RPA System\n</br></br></br>\n\nThis RPA Design by DYU",
+        "options": {
+          "ccEmail": "dhani.yudhiantoro@astragraphia.co.id, natan.hao@astragraphia.co.id",
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "id": "60ede652-c12c-48f1-9921-c9868e2657d4",
+      "name": "Send Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        880,
+        740
+      ],
+      "executeOnce": true,
+      "credentials": {
+        "smtp": {
+          "id": "Il3I47fRwLkmkBH7",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "convertToHtmlTable",
+        "options": {
+          "capitalize": true,
+          "customStyling": true,
+          "tableAttributes": "style=\"border-collapse: collapse;   width: 100%;\"",
+          "headerAttributes": "style=\"border: 1px solid; border-spacing: 1px;padding-top: 12px;   padding-bottom: 12px;   text-align: left;   background-color: #04AA6D;   color: white;\"",
+          "cellAttributes": "style=\"border: 1px solid; border-spacing: 1px;text-align: center;\""
+        }
+      },
+      "id": "3200a8ab-a147-43b4-af6c-e5773aa7ac70",
+      "name": "HTML",
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1,
+      "position": [
+        660,
+        740
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "EXEC [sp_Cost/MoP_byFamily_All] "
+      },
+      "id": "facba4b0-7c85-4733-9857-d222fff8c79a",
+      "name": "Get Cost/MoP EQ and Family of UMC Today",
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1,
+      "position": [
+        460,
+        740
+      ],
+      "credentials": {
+        "microsoftSql": {
+          "id": "QHKUmhKC9pyHDZmT",
+          "name": "DeSSy Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "30 4 * * *"
+            },
+            {
+              "triggerAtHour": 16,
+              "triggerAtMinute": 30
+            }
+          ]
+        }
+      },
+      "id": "21ddd0a5-1d18-4ffc-86d8-dc2e02f040e2",
+      "name": "Schedule every 16.30 on MonToSat",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        740
+      ]
+    },
+    {
+      "parameters": {
+        "content": "RUNNING SP Report and Send to Email",
+        "height": 237,
+        "width": 895,
+        "color": 3
+      },
+      "id": "c7a055f5-84e2-4b8a-ae97-21a00cb07efd",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        160,
+        680
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Cost/MoP EQ and Family of UMC Today": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule every 16.30 on MonToSat": {
+      "main": [
+        [
+          {
+            "node": "Get Cost/MoP EQ and Family of UMC Today",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "da3fa80d-689f-4538-b554-e7bcf90c9c1b",
+  "id": "8YVFt8LuOiYlVA1a",
+  "meta": {
+    "instanceId": "7849886fb6c62bea507a014ee0c7f6e977afa31bdccbb7a73b92fbe1b34dfbd5"
+  },
+  "tags": []
+}

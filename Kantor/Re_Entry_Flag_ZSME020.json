@@ -1,0 +1,73 @@
+{
+  "name": "Re Entry Flag ZSME020",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "*/30 18-23 * * 1-4,7"
+            },
+            {
+              "field": "cronExpression",
+              "expression": "*/30 0-6 * * 1-4,7"
+            }
+          ]
+        }
+      },
+      "id": "e0e669f1-bf7d-420f-81c2-130a68958fc3",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        460,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "EXEC USP_DataEntry_ReEntryFlagZSME020"
+      },
+      "id": "489e80bb-cc77-4ede-ab3c-7c18cc196e26",
+      "name": "Microsoft SQL",
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1,
+      "position": [
+        680,
+        460
+      ],
+      "credentials": {
+        "microsoftSql": {
+          "id": "nLUgzcRuxs9rV4Jf",
+          "name": "Dispatcher Connection"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Microsoft SQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d080890b-02ad-430c-9189-062047f28896",
+  "id": "Rrp4pykXIRUI4ln3",
+  "meta": {
+    "instanceId": "7849886fb6c62bea507a014ee0c7f6e977afa31bdccbb7a73b92fbe1b34dfbd5"
+  },
+  "tags": []
+}

@@ -1,0 +1,760 @@
+{
+  "name": "Data Entry Backlog - Phase2",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 19 * * 1-4,7"
+            },
+            {
+              "field": "cronExpression",
+              "expression": "0 1 * * 1-5"
+            }
+          ]
+        }
+      },
+      "id": "fd44b3db-0edb-4b6a-aad5-bacafd9246b1",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "EXEC USP_DataEntry_BacklogWithErrorReport 1,'A1'"
+      },
+      "id": "49d29f18-3e0a-409f-8ea3-d4d4e1271d52",
+      "name": "SQL Get Backlog A1",
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        -380
+      ],
+      "credentials": {
+        "microsoftSql": {
+          "id": "nLUgzcRuxs9rV4Jf",
+          "name": "Dispatcher Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toFile",
+        "fileFormat": "xlsx",
+        "options": {}
+      },
+      "id": "4c6417c2-6a0f-47eb-82c1-097b3d0bfef6",
+      "name": "File Backlog A1",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        -380
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "DeSSy.Admin@astragraphia.co.id",
+        "toEmail": "Lukman.Prasetyo@astragraphia.co.id",
+        "subject": "[iSupport4] : Hutang Data Entry Backlog Team A1 hingga saat ini",
+        "html": "Dear All,\n\nBerikut terlampir adalah backlog data entry kunjungan teknisi di team Anda beserta keterangan Error dari SAP. </br></br>\nSilahkan untuk dilakukan perbaikan dan di entry kembali menggunakan SAP atau iSupport.</br>\n</br>\nTerima kasih.\n</br></br>\nSalam,</br>\nDeSSy Admin</br>\nService Planning RPA System\n</br></br></br>\n\nThis RPA Design by DYU",
+        "options": {
+          "attachments": "data",
+          "ccEmail": "dhani.yudhiantoro@astragraphia.co.id,Natan.hao@astragraphia.co.id, Radite.Bryllianto@astragraphia.co.id",
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "id": "e1e33c9d-6d70-4c81-a8a6-18c7fd3e0f3d",
+      "name": "Send Email Lukman Prasetyo",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1500,
+        -380
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "Il3I47fRwLkmkBH7",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "EXEC USP_DataEntry_BacklogWithErrorReport 1,'B1'"
+      },
+      "id": "54067a5c-1c3e-4c95-9466-ccb82de91ae0",
+      "name": "SQL Get Backlog B1",
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        -180
+      ],
+      "credentials": {
+        "microsoftSql": {
+          "id": "nLUgzcRuxs9rV4Jf",
+          "name": "Dispatcher Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toFile",
+        "fileFormat": "xlsx",
+        "options": {}
+      },
+      "id": "861d40f0-dab0-4670-aef3-59c0b0708296",
+      "name": "File Backlog B1",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        -180
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "DeSSy.Admin@astragraphia.co.id",
+        "toEmail": "Leonardus.Simbolon@astragraphia.co.id",
+        "subject": "[iSupport4] : Hutang Data Entry Backlog Team B1 hingga saat ini",
+        "html": "Dear All,\n\nBerikut terlampir adalah backlog data entry kunjungan teknisi di team Anda beserta keterangan Error dari SAP. </br></br>\nSilahkan untuk dilakukan perbaikan dan di entry kembali menggunakan SAP atau iSupport.</br>\n</br>\nTerima kasih.\n</br></br>\nSalam,</br>\nDeSSy Admin</br>\nService Planning RPA System\n</br></br></br>\n\nThis RPA Design by DYU",
+        "options": {
+          "attachments": "data",
+          "ccEmail": "dhani.yudhiantoro@astragraphia.co.id,Natan.hao@astragraphia.co.id, Radite.Bryllianto@astragraphia.co.id",
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "id": "d638fe26-a39e-4a87-864c-f5a354fbfd4d",
+      "name": "Send Email Leonardus Simbolon",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1500,
+        -180
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "Il3I47fRwLkmkBH7",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "EXEC USP_DataEntry_BacklogWithErrorReport 1,'C1'"
+      },
+      "id": "0b45104a-9124-4e25-b73b-71a2c72cad35",
+      "name": "SQL Get Backlog C1",
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        20
+      ],
+      "credentials": {
+        "microsoftSql": {
+          "id": "nLUgzcRuxs9rV4Jf",
+          "name": "Dispatcher Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toFile",
+        "fileFormat": "xlsx",
+        "options": {}
+      },
+      "id": "cb59babd-5fd9-4226-97a8-635af39f56ac",
+      "name": "File Backlog C1",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "DeSSy.Admin@astragraphia.co.id",
+        "toEmail": "Reynold.Tobing@astragraphia.co.id",
+        "subject": "[iSupport4] : Hutang Data Entry Backlog Team C1 hingga saat ini",
+        "html": "Dear All,\n\nBerikut terlampir adalah backlog data entry kunjungan teknisi di team Anda beserta keterangan Error dari SAP. </br></br>\nSilahkan untuk dilakukan perbaikan dan di entry kembali menggunakan SAP atau iSupport.</br>\n</br>\nTerima kasih.\n</br></br>\nSalam,</br>\nDeSSy Admin</br>\nService Planning RPA System\n</br></br></br>\n\nThis RPA Design by DYU",
+        "options": {
+          "attachments": "data",
+          "ccEmail": "dhani.yudhiantoro@astragraphia.co.id,Natan.hao@astragraphia.co.id, Radite.Bryllianto@astragraphia.co.id",
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "id": "9e189454-1bfd-4b61-9c68-23f1c2b01607",
+      "name": "Send Email Reynold Tobing",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1500,
+        20
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "Il3I47fRwLkmkBH7",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "EXEC USP_DataEntry_BacklogWithErrorReport 1,'D1'"
+      },
+      "id": "06d4ae69-90cb-4ba0-921c-c4603fef8c73",
+      "name": "SQL Get Backlog D1",
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        220
+      ],
+      "credentials": {
+        "microsoftSql": {
+          "id": "nLUgzcRuxs9rV4Jf",
+          "name": "Dispatcher Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toFile",
+        "fileFormat": "xlsx",
+        "options": {}
+      },
+      "id": "97fa5599-045b-49d7-8a58-fb7a5db32d8c",
+      "name": "File Backlog D1",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "DeSSy.Admin@astragraphia.co.id",
+        "toEmail": "Meyzar.Safithra@astragraphia.co.id",
+        "subject": "[iSupport4] : Hutang Data Entry Backlog Team D1 hingga saat ini",
+        "html": "Dear All,\n\nBerikut terlampir adalah backlog data entry kunjungan teknisi di team Anda beserta keterangan Error dari SAP. </br></br>\nSilahkan untuk dilakukan perbaikan dan di entry kembali menggunakan SAP atau iSupport.</br>\n</br>\nTerima kasih.\n</br></br>\nSalam,</br>\nDeSSy Admin</br>\nService Planning RPA System\n</br></br></br>\n\nThis RPA Design by DYU",
+        "options": {
+          "attachments": "data",
+          "ccEmail": "dhani.yudhiantoro@astragraphia.co.id,Natan.hao@astragraphia.co.id, Radite.Bryllianto@astragraphia.co.id",
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "id": "ec7f27be-10f9-47e8-ba5f-4f3a214a2742",
+      "name": "Send Email Meyzar Safithra",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1500,
+        220
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "Il3I47fRwLkmkBH7",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "EXEC USP_DataEntry_BacklogWithErrorReport 1,'N1'"
+      },
+      "id": "e8151a25-13ec-48bb-8b84-0c90f778b069",
+      "name": "SQL Get Backlog N1",
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        420
+      ],
+      "credentials": {
+        "microsoftSql": {
+          "id": "nLUgzcRuxs9rV4Jf",
+          "name": "Dispatcher Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toFile",
+        "fileFormat": "xlsx",
+        "options": {}
+      },
+      "id": "66eedd6d-e695-44c8-a57e-1aed4a8c9ee9",
+      "name": "File Backlog N1",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "DeSSy.Admin@astragraphia.co.id",
+        "toEmail": "Nurman@astragraphia.co.id",
+        "subject": "[iSupport4] : Hutang Data Entry Backlog Team N1 hingga saat ini",
+        "html": "Dear All,\n\nBerikut terlampir adalah backlog data entry kunjungan teknisi di team Anda beserta keterangan Error dari SAP. </br></br>\nSilahkan untuk dilakukan perbaikan dan di entry kembali menggunakan SAP atau iSupport.</br>\n</br>\nTerima kasih.\n</br></br>\nSalam,</br>\nDeSSy Admin</br>\nService Planning RPA System\n</br></br></br>\n\nThis RPA Design by DYU",
+        "options": {
+          "attachments": "data",
+          "ccEmail": "dhani.yudhiantoro@astragraphia.co.id,Natan.hao@astragraphia.co.id, Radite.Bryllianto@astragraphia.co.id",
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "id": "2b993fc7-410f-4e60-8c80-648797d183af",
+      "name": "Send Email Nurman",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1500,
+        420
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "Il3I47fRwLkmkBH7",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "EXEC USP_DataEntry_BacklogWithErrorReport 1,'O1'"
+      },
+      "id": "175441b3-51f7-4191-8d88-a2f470a714c6",
+      "name": "SQL Get Backlog O1",
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        640
+      ],
+      "credentials": {
+        "microsoftSql": {
+          "id": "nLUgzcRuxs9rV4Jf",
+          "name": "Dispatcher Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toFile",
+        "fileFormat": "xlsx",
+        "options": {}
+      },
+      "id": "77226425-38eb-42d8-bcbb-f908e10247e0",
+      "name": "File Backlog O1",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "DeSSy.Admin@astragraphia.co.id",
+        "toEmail": "Yan.Andriyana@astragraphia.co.id",
+        "subject": "[iSupport4] : Hutang Data Entry Backlog Team O1 hingga saat ini",
+        "html": "Dear All,\n\nBerikut terlampir adalah backlog data entry kunjungan teknisi di team Anda beserta keterangan Error dari SAP. </br></br>\nSilahkan untuk dilakukan perbaikan dan di entry kembali menggunakan SAP atau iSupport.</br>\n</br>\nTerima kasih.\n</br></br>\nSalam,</br>\nDeSSy Admin</br>\nService Planning RPA System\n</br></br></br>\n\nThis RPA Design by DYU",
+        "options": {
+          "attachments": "data",
+          "ccEmail": "dhani.yudhiantoro@astragraphia.co.id,Natan.hao@astragraphia.co.id, Radite.Bryllianto@astragraphia.co.id",
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "id": "46aaf9fa-c870-4edd-8b12-0d73977c5663",
+      "name": "Send Email Yan Andriyana",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1500,
+        640
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "Il3I47fRwLkmkBH7",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "EXEC USP_DataEntry_BacklogWithErrorReport 1,'S1'"
+      },
+      "id": "584655e9-726a-4bb5-88e2-1141c491a134",
+      "name": "SQL Get Backlog S1",
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        840
+      ],
+      "credentials": {
+        "microsoftSql": {
+          "id": "nLUgzcRuxs9rV4Jf",
+          "name": "Dispatcher Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toFile",
+        "fileFormat": "xlsx",
+        "options": {}
+      },
+      "id": "62f557cf-7be5-481d-be38-1b2c70b07fc7",
+      "name": "File Backlog S1",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        840
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "DeSSy.Admin@astragraphia.co.id",
+        "toEmail": "Nanang.Fauzi@astragraphia.co.id",
+        "subject": "[iSupport4] : Hutang Data Entry Backlog Team S1 hingga saat ini",
+        "html": "Dear All,\n\nBerikut terlampir adalah backlog data entry kunjungan teknisi di team Anda beserta keterangan Error dari SAP. </br></br>\nSilahkan untuk dilakukan perbaikan dan di entry kembali menggunakan SAP atau iSupport.</br>\n</br>\nTerima kasih.\n</br></br>\nSalam,</br>\nDeSSy Admin</br>\nService Planning RPA System\n</br></br></br>\n\nThis RPA Design by DYU",
+        "options": {
+          "attachments": "data",
+          "ccEmail": "dhani.yudhiantoro@astragraphia.co.id,Natan.hao@astragraphia.co.id, Radite.Bryllianto@astragraphia.co.id",
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "id": "f07975ad-f33c-46ad-8f02-4d3ba6f08b6f",
+      "name": "Send Email Nanang Fauzi",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1500,
+        840
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "Il3I47fRwLkmkBH7",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "EXEC USP_DataEntry_BacklogWithErrorReport 1,'T1'"
+      },
+      "id": "d7ff26cd-c6c5-4f05-bb23-1667d5527f0c",
+      "name": "SQL Get Backlog T1",
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        1040
+      ],
+      "credentials": {
+        "microsoftSql": {
+          "id": "nLUgzcRuxs9rV4Jf",
+          "name": "Dispatcher Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toFile",
+        "fileFormat": "xlsx",
+        "options": {}
+      },
+      "id": "960b29b3-239a-4535-84e3-50e74fe09d8a",
+      "name": "File Backlog T1",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "DeSSy.Admin@astragraphia.co.id",
+        "toEmail": "Ludy.Hendro@astragraphia.co.id",
+        "subject": "[iSupport4] : Hutang Data Entry Backlog Team T1 hingga saat ini",
+        "html": "Dear All,\n\nBerikut terlampir adalah backlog data entry kunjungan teknisi di team Anda beserta keterangan Error dari SAP. </br></br>\nSilahkan untuk dilakukan perbaikan dan di entry kembali menggunakan SAP atau iSupport.</br>\n</br>\nTerima kasih.\n</br></br>\nSalam,</br>\nDeSSy Admin</br>\nService Planning RPA System\n</br></br></br>\n\nThis RPA Design by DYU",
+        "options": {
+          "attachments": "data",
+          "ccEmail": "dhani.yudhiantoro@astragraphia.co.id,Natan.hao@astragraphia.co.id, Radite.Bryllianto@astragraphia.co.id",
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "id": "6d4bd695-d8a3-4ac7-b33a-91307509664b",
+      "name": "Send Email Ludy Hendro",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1500,
+        1040
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "Il3I47fRwLkmkBH7",
+          "name": "SMTP account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "SQL Get Backlog A1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SQL Get Backlog B1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SQL Get Backlog C1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SQL Get Backlog D1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SQL Get Backlog N1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SQL Get Backlog O1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SQL Get Backlog S1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SQL Get Backlog T1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SQL Get Backlog A1": {
+      "main": [
+        [
+          {
+            "node": "File Backlog A1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File Backlog A1": {
+      "main": [
+        [
+          {
+            "node": "Send Email Lukman Prasetyo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SQL Get Backlog B1": {
+      "main": [
+        [
+          {
+            "node": "File Backlog B1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File Backlog B1": {
+      "main": [
+        [
+          {
+            "node": "Send Email Leonardus Simbolon",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SQL Get Backlog C1": {
+      "main": [
+        [
+          {
+            "node": "File Backlog C1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File Backlog C1": {
+      "main": [
+        [
+          {
+            "node": "Send Email Reynold Tobing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SQL Get Backlog D1": {
+      "main": [
+        [
+          {
+            "node": "File Backlog D1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File Backlog D1": {
+      "main": [
+        [
+          {
+            "node": "Send Email Meyzar Safithra",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SQL Get Backlog N1": {
+      "main": [
+        [
+          {
+            "node": "File Backlog N1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File Backlog N1": {
+      "main": [
+        [
+          {
+            "node": "Send Email Nurman",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SQL Get Backlog O1": {
+      "main": [
+        [
+          {
+            "node": "File Backlog O1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File Backlog O1": {
+      "main": [
+        [
+          {
+            "node": "Send Email Yan Andriyana",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SQL Get Backlog S1": {
+      "main": [
+        [
+          {
+            "node": "File Backlog S1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File Backlog S1": {
+      "main": [
+        [
+          {
+            "node": "Send Email Nanang Fauzi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SQL Get Backlog T1": {
+      "main": [
+        [
+          {
+            "node": "File Backlog T1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File Backlog T1": {
+      "main": [
+        [
+          {
+            "node": "Send Email Ludy Hendro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1bdba7cd-787f-469a-b499-32e37e0659ec",
+  "id": "GDzhdYfFJro6xekZ",
+  "meta": {
+    "instanceId": "7849886fb6c62bea507a014ee0c7f6e977afa31bdccbb7a73b92fbe1b34dfbd5"
+  },
+  "tags": []
+}

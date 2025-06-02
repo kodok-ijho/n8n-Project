@@ -1,0 +1,135 @@
+{
+  "name": "SERVICE PERFORMANCE - Get Equipment Daily",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 17 24-29 * *"
+            }
+          ]
+        }
+      },
+      "id": "720d4f08-ff17-47aa-8ae6-6d4824fb110f",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "EXEC [SP_SERVPERF_REPORT_1-ListEQbyPeriode] NULL"
+      },
+      "id": "7498105b-7ab1-49b0-992f-ef9a1ac964a4",
+      "name": "Microsoft SQL",
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1,
+      "position": [
+        440,
+        340
+      ],
+      "credentials": {
+        "microsoftSql": {
+          "id": "QHKUmhKC9pyHDZmT",
+          "name": "DeSSy Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toFile",
+        "fileFormat": "xlsx",
+        "options": {
+          "compression": true,
+          "fileName": "=Equipment Periode {{ $json.Periode }}.xlsx"
+        }
+      },
+      "id": "6ddccdab-33f7-413d-93d1-75ee4aba6b4c",
+      "name": "Spreadsheet File",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [
+        660,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "DeSSy.Admin@astragraphia.co.id",
+        "toEmail": "dhani.yudhiantoro@astragraphia.co.id, Radite.Bryllianto@astragraphia.co.id",
+        "subject": "[DeSSy] : data Equipment Service Performance Daily",
+        "html": "Dear Me.",
+        "options": {
+          "attachments": "data",
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "id": "fb2f1223-0eb1-4c52-bcc8-9ceec7bb0079",
+      "name": "Send Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        880,
+        340
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "Il3I47fRwLkmkBH7",
+          "name": "SMTP account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Microsoft SQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL": {
+      "main": [
+        [
+          {
+            "node": "Spreadsheet File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Spreadsheet File": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f4e7a8a0-c55c-4a00-9298-7a1be05d8b38",
+  "id": "rfL6OKsnCz9SUrLg",
+  "meta": {
+    "instanceId": "7849886fb6c62bea507a014ee0c7f6e977afa31bdccbb7a73b92fbe1b34dfbd5"
+  },
+  "tags": []
+}

@@ -1,0 +1,115 @@
+{
+  "name": "WA Page SvO to CE",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 2
+            }
+          ]
+        }
+      },
+      "id": "b9a82677-7e54-4282-beb3-de3347b276b0",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT b.[Name], a.ServiceOrder, LEFT(c.CustName,LEN(c.CustName)-2) AS CustName, '628159019383' AS NoHP\nFROM TB_T_ServiceOrder_PageLog a\nLEFT JOIN TB_M_WorkCentre b\n  ON a.UserName = b.UserName\nLEFT JOIN TB_T_ServiceOrder c\n  ON a.ServiceOrder = c.ServiceOrder\nWHERE a.CreatedOn > DATEADD(MINUTE, -2.1, GETDATE())\nGROUP BY b.[Name], a.ServiceOrder, c.CustName"
+      },
+      "id": "082dfa8e-d054-428c-804c-c370a6d3840f",
+      "name": "Microsoft SQL",
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1,
+      "position": [
+        300,
+        340
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "microsoftSql": {
+          "id": "nLUgzcRuxs9rV4Jf",
+          "name": "Dispatcher Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://waba.ivosights.com/api/v1/messages/send-template-message",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-KEY",
+              "value": "Xx061fb7ef97933d7.03956063ausIUW"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\"wa_id\":\"{{ $json.NoHP }}\",\n\"template_id\":\"67075d92000fe318196dbaf5\",\n\"components\":[\n{ \"type\":\"body\",\n\"parameters\":[\n{ \"type\":\"text\",\n\"text\":\"{{ $json.Name }}\"\n},\n{ \"type\":\"text\",\n\"text\":\"{{ $json.ServiceOrder }}\"\n},\n{ \"type\":\"text\",\n\"text\":\"{{ $json.CustName }}\"\n}\n]\n}\n]\n}",
+        "options": {}
+      },
+      "id": "f4664059-ec39-4efb-bc49-811e98034a7a",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        520,
+        340
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Microsoft SQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "384a9926-c398-4855-bf05-92bfcef7d6d8",
+  "id": "hHtGOJByN6QcrA3f",
+  "meta": {
+    "instanceId": "7849886fb6c62bea507a014ee0c7f6e977afa31bdccbb7a73b92fbe1b34dfbd5"
+  },
+  "tags": [
+    {
+      "name": "WA",
+      "id": "Q70ZRYAKE7FZWqYd",
+      "createdAt": "2024-10-10T10:11:12.290Z",
+      "updatedAt": "2024-10-10T10:11:12.290Z"
+    }
+  ]
+}

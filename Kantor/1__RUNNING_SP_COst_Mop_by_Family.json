@@ -1,0 +1,84 @@
+{
+  "name": "1. RUNNING SP COst/Mop by Family",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "EXEC [sp_Cost/MoP_byFamily_IDN] null,2"
+      },
+      "id": "d20314ca-7566-45cd-a175-96a638909529",
+      "name": "Get Cost/Mop Family IDN",
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1,
+      "position": [
+        760,
+        520
+      ],
+      "credentials": {
+        "microsoftSql": {
+          "id": "QHKUmhKC9pyHDZmT",
+          "name": "DeSSy Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 17
+            }
+          ]
+        }
+      },
+      "id": "f7f5a552-7fb4-4f72-bae4-d9c1078b4b2c",
+      "name": "Schedule Everyday at 5am",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        540,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "content": "RUNNING SP COst/Mop by Family",
+        "height": 237,
+        "width": 512,
+        "color": 4
+      },
+      "id": "1cc332b7-85a1-47e2-8dbc-47b82d570091",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        460,
+        460
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Everyday at 5am": {
+      "main": [
+        [
+          {
+            "node": "Get Cost/Mop Family IDN",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9c875044-e24c-4944-b535-81a58ea7e889",
+  "id": "CdXSJfN2FxebtrpG",
+  "meta": {
+    "instanceId": "7849886fb6c62bea507a014ee0c7f6e977afa31bdccbb7a73b92fbe1b34dfbd5"
+  },
+  "tags": []
+}

@@ -1,0 +1,136 @@
+{
+  "name": "Report IT Project Support",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "01 20 1 * *"
+            }
+          ]
+        }
+      },
+      "id": "d4beb211-7280-44e8-94ed-8c7840467a6a",
+      "name": "Schedule Date 1 Every Month by 8 am",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -80,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "EXEC [SP_REPORTGENERATOR_SupportITProject]"
+      },
+      "id": "a8cc3ebe-36eb-4ed0-92b8-f613d9bcf738",
+      "name": "Microsoft SQL",
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1,
+      "position": [
+        140,
+        340
+      ],
+      "credentials": {
+        "microsoftSql": {
+          "id": "QHKUmhKC9pyHDZmT",
+          "name": "DeSSy Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toFile",
+        "fileFormat": "xlsx",
+        "options": {
+          "fileName": "=Report IT Support_{{ $json.Periode }}.xlsx"
+        }
+      },
+      "id": "814a0986-75f7-4b73-be4e-58671d4199db",
+      "name": "Spreadsheet File",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [
+        360,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "DeSSy.Admin@astragraphia.co.id",
+        "toEmail": "adri.krisnawan@astragraphia.co.id",
+        "subject": "Data Support IT Project",
+        "html": "Dear All,\n\nBerikut terlampir adalah report Support IT Project teknisi. </br>\n</br>\nTerima kasih.\n</br></br>\nSalam,</br>\nDeSSy Admin</br>\nService Planning RPA System\n</br></br></br>\n\nThis RPA Design by DYU",
+        "options": {
+          "attachments": "data",
+          "ccEmail": "Okky.chandra@astragraphia.co.id,Natan.hao@astragraphia.co.id",
+          "bccEmail": "dhani.yudhiantoro@astragraphia.co.id",
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "id": "2cd3e6b1-4d06-4859-bc56-ba36fff95ab9",
+      "name": "Send Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        560,
+        340
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "Il3I47fRwLkmkBH7",
+          "name": "SMTP account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Date 1 Every Month by 8 am": {
+      "main": [
+        [
+          {
+            "node": "Microsoft SQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL": {
+      "main": [
+        [
+          {
+            "node": "Spreadsheet File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Spreadsheet File": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ab74dd3a-08a1-46fd-a5af-e419f24f5b24",
+  "id": "BfMdulKEaAok6D6t",
+  "meta": {
+    "instanceId": "7849886fb6c62bea507a014ee0c7f6e977afa31bdccbb7a73b92fbe1b34dfbd5"
+  },
+  "tags": []
+}

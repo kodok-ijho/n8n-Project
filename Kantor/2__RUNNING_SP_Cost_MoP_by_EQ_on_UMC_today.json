@@ -1,0 +1,85 @@
+{
+  "name": "2. RUNNING SP Cost/MoP by EQ on UMC today",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "EXEC [sp_Cost/MoP_byEq_UMC]"
+      },
+      "id": "c3882d28-00e9-4e48-8849-e8c6a93c5ccf",
+      "name": "Get Cost/Mop by Eq on UMC Today",
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1,
+      "position": [
+        660,
+        260
+      ],
+      "credentials": {
+        "microsoftSql": {
+          "id": "QHKUmhKC9pyHDZmT",
+          "name": "DeSSy Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "=0 21-4 * * mon-sat"
+            }
+          ]
+        }
+      },
+      "id": "1392e88d-875a-41c4-9c18-b5c0813d3a18",
+      "name": "Schedule every 9to16 on MonToSat",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "content": "RUNNING SP Cost/MoP by EQ on UMC today",
+        "height": 237,
+        "width": 512,
+        "color": 6
+      },
+      "id": "a2770c3b-22cd-43c2-9584-28806dd7b1f4",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        360,
+        200
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule every 9to16 on MonToSat": {
+      "main": [
+        [
+          {
+            "node": "Get Cost/Mop by Eq on UMC Today",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0555b18a-493a-4dc1-8ed4-30bedad82a26",
+  "id": "9bKxPcCBqv7q699C",
+  "meta": {
+    "instanceId": "7849886fb6c62bea507a014ee0c7f6e977afa31bdccbb7a73b92fbe1b34dfbd5"
+  },
+  "tags": []
+}
