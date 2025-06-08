@@ -1,0 +1,660 @@
+{
+  "name": "WA waha 2",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "@devlikeapro/n8n-nodes-waha.wahaTrigger",
+      "typeVersion": 202502,
+      "position": [
+        160,
+        -220
+      ],
+      "id": "c6d03a4c-0895-4497-954e-f581052db916",
+      "name": "WAHA Trigger",
+      "webhookId": "e58c322b-0132-4333-8d08-08ab89a73163"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5d803a0a-2a8c-4aeb-89f7-7be95a9e600e",
+              "leftValue": "={{ $('WAHA Trigger').item.json.payload.hasMedia }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        460,
+        -200
+      ],
+      "id": "7e173375-17a5-431b-a487-3d92dc4dcb6e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "resource": "Chats",
+        "operation": "Get Chat Message",
+        "requestOptions": {}
+      },
+      "type": "@devlikeapro/n8n-nodes-waha.WAHA",
+      "typeVersion": 202502,
+      "position": [
+        740,
+        -220
+      ],
+      "id": "5b8e64fb-d137-4638-a28d-5e2a02b8cd99",
+      "name": "WAHA",
+      "credentials": {
+        "wahaApi": {
+          "id": "dx83N59J5adw8Y2w",
+          "name": "WAHA account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1500,
+        80
+      ],
+      "id": "af4b61a6-7e7d-4b94-9091-d266d7abe22f",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "OPoHwXFKjJkzPTCZ",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('If').item.json.session }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1640,
+        80
+      ],
+      "id": "7f3bb46d-8b60-4f58-bfa1-e782a0d49944",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "resource": "Chatting",
+        "operation": "Stop Typing",
+        "session": "={{ $('WAHA Trigger').item.json.session }}",
+        "chatId": "={{ $('WAHA Trigger').item.json.payload.from }}",
+        "requestOptions": {}
+      },
+      "type": "@devlikeapro/n8n-nodes-waha.WAHA",
+      "typeVersion": 202502,
+      "position": [
+        1760,
+        1020
+      ],
+      "id": "12fc27aa-f461-4ed2-b146-97d0a6303075",
+      "name": "WAHA1",
+      "credentials": {
+        "wahaApi": {
+          "id": "dx83N59J5adw8Y2w",
+          "name": "WAHA account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "Chatting",
+        "operation": "Start Typing",
+        "session": "={{ $('WAHA Trigger').item.json.session }}",
+        "chatId": "={{ $('WAHA Trigger').item.json.payload.from }}",
+        "requestOptions": {}
+      },
+      "type": "@devlikeapro/n8n-nodes-waha.WAHA",
+      "typeVersion": 202502,
+      "position": [
+        1040,
+        20
+      ],
+      "id": "ed715b47-d831-478c-bab0-78ea99438430",
+      "name": "WAHA2",
+      "credentials": {
+        "wahaApi": {
+          "id": "dx83N59J5adw8Y2w",
+          "name": "WAHA account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "Chatting",
+        "operation": "Send Text",
+        "session": "={{ $('WAHA Trigger').item.json.session }}",
+        "chatId": "={{ $('If').item.json.payload.from }}",
+        "text": "={{ $('AI Agent Text').item.json.output }}",
+        "requestOptions": {}
+      },
+      "type": "@devlikeapro/n8n-nodes-waha.WAHA",
+      "typeVersion": 202502,
+      "position": [
+        2060,
+        900
+      ],
+      "id": "b7e806a9-cd17-4803-aff3-e93f5f76fe7a",
+      "name": "WAHA3",
+      "credentials": {
+        "wahaApi": {
+          "id": "dx83N59J5adw8Y2w",
+          "name": "WAHA account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "10714bee-c6ab-4055-9c80-448c52f50e73",
+              "name": "mediaUrl",
+              "value": "={{ $json.mediaUrl.replace(\"http://localhost:3000\", \"https://waha-ajnfbbsp.waha.my.id\") }}\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        920,
+        -220
+      ],
+      "id": "34b06b49-067c-45cc-8f7f-c0b2a304013f",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.mediaUrl }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wahaApi",
+        "options": {
+          "response": {}
+        }
+      },
+      "id": "ad5337db-12d7-4b2e-a26b-fcf09d8cca08",
+      "name": "Download Media",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1280,
+        -220
+      ],
+      "credentials": {
+        "wahaApi": {
+          "id": "dx83N59J5adw8Y2w",
+          "name": "WAHA account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "Chatting",
+        "operation": "Send Seen",
+        "session": "={{ $('WAHA Trigger').item.json.session }}",
+        "chatId": "={{ $('WAHA Trigger').item.json.payload.from }}",
+        "messageId": "={{ $('WAHA Trigger').item.json.payload.id }}",
+        "participant": "",
+        "requestOptions": {}
+      },
+      "id": "64f6212a-0560-4191-b0bc-6bf538d0432f",
+      "name": "Send Seen",
+      "type": "@devlikeapro/n8n-nodes-waha.WAHA",
+      "typeVersion": 202409,
+      "position": [
+        1280,
+        -400
+      ],
+      "credentials": {
+        "wahaApi": {
+          "id": "dx83N59J5adw8Y2w",
+          "name": "WAHA account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "true",
+                    "rightValue": "true",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8311c8ac-8bd1-453c-b91e-dc3944d85b06"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "242f1ea8-0d3f-491c-a60b-1ac78c82488f",
+                    "leftValue": "true",
+                    "rightValue": "true",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "allMatchingOutputs": true
+        }
+      },
+      "id": "81adcfa1-fdf9-434b-a33f-1ed4394574a5",
+      "name": "Run All",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.1,
+      "position": [
+        1100,
+        -220
+      ],
+      "alwaysOutputData": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "resource": "Chatting",
+        "operation": "Send Text",
+        "session": "={{ $('WAHA Trigger').item.json.session }}",
+        "chatId": "={{ $('WAHA Trigger').item.json.payload.from }}",
+        "text": "={{ $('AI Agent Image').item.json.output }}",
+        "requestOptions": {}
+      },
+      "type": "@devlikeapro/n8n-nodes-waha.WAHA",
+      "typeVersion": 202502,
+      "position": [
+        2040,
+        -220
+      ],
+      "id": "245d3a3b-0797-4673-8bc6-0e1c9b555470",
+      "name": "WAHA5",
+      "credentials": {
+        "wahaApi": {
+          "id": "dx83N59J5adw8Y2w",
+          "name": "WAHA account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "Chatting",
+        "operation": "Start Typing",
+        "session": "={{ $('WAHA Trigger').item.json.session }}",
+        "chatId": "={{ $('WAHA Trigger').item.json.payload.from }}",
+        "requestOptions": {}
+      },
+      "type": "@devlikeapro/n8n-nodes-waha.WAHA",
+      "typeVersion": 202502,
+      "position": [
+        1540,
+        -400
+      ],
+      "id": "e7065373-a156-4692-9156-becd6bf1bb90",
+      "name": "WAHA4",
+      "credentials": {
+        "wahaApi": {
+          "id": "dx83N59J5adw8Y2w",
+          "name": "WAHA account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "Chatting",
+        "operation": "Stop Typing",
+        "session": "={{ $('WAHA Trigger').item.json.session }}",
+        "chatId": "={{ $('WAHA Trigger').item.json.payload.from }}",
+        "requestOptions": {}
+      },
+      "type": "@devlikeapro/n8n-nodes-waha.WAHA",
+      "typeVersion": 202502,
+      "position": [
+        1840,
+        -220
+      ],
+      "id": "5f09033d-3ca3-451d-a4ff-10f73976667e",
+      "name": "WAHA6",
+      "credentials": {
+        "wahaApi": {
+          "id": "dx83N59J5adw8Y2w",
+          "name": "WAHA account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "Chatting",
+        "operation": "Send Seen",
+        "session": "={{ $('WAHA Trigger').item.json.session }}",
+        "chatId": "={{ $('WAHA Trigger').item.json.payload.from }}",
+        "messageId": "={{ $('WAHA Trigger').item.json.payload.id }}",
+        "participant": "",
+        "requestOptions": {}
+      },
+      "id": "29175853-9de9-4d02-829b-b06d88ac40e1",
+      "name": "Send Seen1",
+      "type": "@devlikeapro/n8n-nodes-waha.WAHA",
+      "typeVersion": 202409,
+      "position": [
+        800,
+        20
+      ],
+      "credentials": {
+        "wahaApi": {
+          "id": "dx83N59J5adw8Y2w",
+          "name": "WAHA account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=hari ini tanggal {{ $now }}. Abaikan jika informasi ini sudah sesuai. Tidak perlu meminta maaf tentang kesalahan waktu.\n\n{{ $('WAHA Trigger').item.json.payload.body }}",
+        "options": {
+          "passthroughBinaryImages": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        -220
+      ],
+      "id": "9d005c91-f7e3-4694-ae22-30feb3c8590c",
+      "name": "AI Agent Image"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemma-3-12b-it",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        1000
+      ],
+      "id": "7e33a972-1f6a-491f-b43b-dd9b7e640b27",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Llj4OHIY6ojxM9uC",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "WAHA Trigger": {
+      "main": [
+        [],
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "WAHA",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Seen1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WAHA": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent Image",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent Image",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WAHA2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WAHA1": {
+      "main": [
+        [
+          {
+            "node": "WAHA3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Run All",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Media": {
+      "main": [
+        [
+          {
+            "node": "AI Agent Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run All": {
+      "main": [
+        [
+          {
+            "node": "Send Seen",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Download Media",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WAHA6": {
+      "main": [
+        [
+          {
+            "node": "WAHA5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WAHA4": {
+      "main": [
+        []
+      ]
+    },
+    "Send Seen": {
+      "main": [
+        [
+          {
+            "node": "WAHA4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Seen1": {
+      "main": [
+        [
+          {
+            "node": "WAHA2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Image": {
+      "main": [
+        [
+          {
+            "node": "WAHA6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Jakarta",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "7028afc7-c75f-4fab-97d5-dbfe6ea06da1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6dd2ad78cf021a93bdef7d0cd514e65615a656b993fc28bea7be2af52b0ac8ed"
+  },
+  "id": "Cg3qQx6H7ThSNv95",
+  "tags": [
+    {
+      "createdAt": "2025-06-05T00:02:55.352Z",
+      "updatedAt": "2025-06-05T00:02:55.352Z",
+      "id": "UmdaV5hsjmenq4Yb",
+      "name": "automate"
+    },
+    {
+      "createdAt": "2025-06-05T00:02:48.663Z",
+      "updatedAt": "2025-06-05T00:02:48.663Z",
+      "id": "aoLpm5CiuZrwJekw",
+      "name": "Whatsapp"
+    }
+  ]
+}
